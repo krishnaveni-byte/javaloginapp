@@ -1,0 +1,5 @@
+---
+- hosts: all
+  tasks:
+    - name: Copying Tar file
+      copy: src="./target/*.war" dest="/opt/tomcat/webapps"
