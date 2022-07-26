@@ -24,14 +24,14 @@ pipeline{
             steps{
                 sh ' ls '
                 
-             sh 'mvn sonar:sonar -Dsonar.login=72fd47d0d8fcebf30f88ab46209309060dba6749  -Dsonar.host.url=http://65.1.86.102:9000'
+        //     sh 'mvn sonar:sonar -Dsonar.login=72fd47d0d8fcebf30f88ab46209309060dba6749  -Dsonar.host.url=http://65.1.86.102:9000'
             }
         }
         stage('Artifactory uploading'){
             steps{
                 sh ' ls '
               //  sh 'curl -sSf -u admin:Admin@123 -X PUT -T target/*.war http://43.205.130.197:8082/artifactory/result/'
-                 sh 'curl -sSf -u admin:Admin@123 -X PUT -T target/*.war http://13.233.95.39:8082/artifactory/result/'
+           //      sh 'curl -sSf -u admin:Admin@123 -X PUT -T target/*.war http://13.233.95.39:8082/artifactory/result/'
             
             }
         } 
