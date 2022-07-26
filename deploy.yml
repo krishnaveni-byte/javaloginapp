@@ -1,5 +1,9 @@
 ---
 - hosts: all
   tasks:
-    - name: Copying Tar file
+    - name: Copying war file
       copy: src="/var/lib/jenkins/workspace/pipeline/target/valaxy-2.0-RELEASE.war" dest="/opt/tomcat/webapps"
+    - name: restart Tomcat on sever
+      systemd:
+        name: tomcat
+        state: restarted
