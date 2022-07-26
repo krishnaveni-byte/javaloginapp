@@ -1,0 +1,55 @@
+pipeline{
+    agent any
+    tools {
+        maven "maven"
+    }
+    environment {
+        PATH = "$PATH:/usr/share/maven/bin"
+    }
+    stages{
+       stage('checkout'){
+            steps{
+                cleanWs()
+                git 'https://github.com/krishnaveni-byte/javaloginapp.git'
+             // git branch: 'main', credentialsId: 'gitid', url: 'https://github.com/krishnaveni-byte/hello-world.git'
+            }
+         }        
+       stage('build'){
+            steps{
+               // sh 'mvn compile install'
+              sh 'mvn clean package '
+            }
+         }
+        stage('sonar'){
+            steps{
+                sh ' ls '
+                
+             sh 'mvn sonar:sonar -Dsonar.login=72fd47d0d8fcebf30f88ab46209309060dba6749  -Dsonar.host.url=http://65.1.86.102:9000'
+            }
+        }
+        stage('Artifactory uploading'){
+            steps{
+                sh ' ls '
+              //  sh 'curl -sSf -u admin:Admin@123 -X PUT -T target/*.war http://43.205.130.197:8082/artifactory/result/'
+                 sh 'curl -sSf -u admin:Admin@123 -X PUT -T target/*.war http://13.233.95.39:8082/artifactory/result/'
+            
+            }
+        } 
+          stage('artifacts to ansible') {
+            steps {
+            sshPublisher(publishers: [sshPublisherDesc(configName: 'Jenkins', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''rsync -avh /var/lib/jenkins/workspace/pipeline/target/valaxy-2.0-RELEASE.war root@172.31.43.242:/opt
+''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+        
+        sshPublisher(publishers: [sshPublisherDesc(configName: 'Jenkins', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''rsync -avh /var/lib/jenkins/workspace/pipeline/index.html root@172.31.43.242:/opt
+''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+        
+        }
+    }
+    stage('deploy to tomact'){
+            steps{
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'ansible-playbook /opt/deploy1.yml', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            }
+         }
+        
+    }
+}
