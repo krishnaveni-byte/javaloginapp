@@ -1,2 +1,2 @@
 [web]
-13.233.65.194 ansible_user='root' ansible_password='root' ansible_connection=ssh ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+172.31.43.215 ansible_user='root' ansible_password='root' ansible_connection=ssh ansible_ssh_common_args='-o StrictHostKeyChecking=no'
