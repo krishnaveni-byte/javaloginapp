@@ -37,10 +37,10 @@ pipeline{
         } 
           stage('artifacts to ansible') {
             steps {
-            sshPublisher(publishers: [sshPublisherDesc(configName: 'Jenkins', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''rsync -avh /var/lib/jenkins/workspace/pipeline/target/valaxy-2.0-RELEASE.war root@172.31.43.242:/opt
+            sshPublisher(publishers: [sshPublisherDesc(configName: 'Jenkins', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''rsync -avh /var/lib/jenkins/workspace/pipeline/target/valaxy-2.0-RELEASE.war root@13.233.168.149:/opt
 ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
         
-        sshPublisher(publishers: [sshPublisherDesc(configName: 'Jenkins', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''rsync -avh /var/lib/jenkins/workspace/pipeline/index.html root@172.31.43.242:/opt
+        sshPublisher(publishers: [sshPublisherDesc(configName: 'Jenkins', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''rsync -avh /var/lib/jenkins/workspace/pipeline/index.html root@13.233.168.149:/opt
 ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
         
         }
